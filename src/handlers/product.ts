@@ -2,22 +2,17 @@ import { Request, Response } from "express"
 import Product from "../models/Product.model"
 
 export const getProducts = async (req: Request, res: Response)=>{
-    try {
-        const products = await Product.findAll({
+    const products = await Product.findAll({
             order: [
                 ['price', 'DESC']
             ],
             attributes: {exclude: ['createdAt', 'updatedAt']}
         })
         res.json({data: products})
-    } catch (error) {
-        console.log(error)
-    }
 
 }
 export const getProductsById = async (req: Request, res: Response)=>{
-    try {
-       const { id } = req.params //Se manda llamar como fue llamada en el router dinámico en este caso id
+    const { id } = req.params //Se manda llamar como fue llamada en el router dinámico en este caso id
 
        const product = await Product.findByPk(id)//Busca por medio del id que se le paso a traves de la primary key de las columna 
 
@@ -29,9 +24,6 @@ export const getProductsById = async (req: Request, res: Response)=>{
        }
 
        res.json({data: product}) //Manda llamar el json completo del id solicitado
-    } catch (error) {
-        console.log(error)
-    }
 
 }
 
@@ -39,13 +31,9 @@ export const getProductsById = async (req: Request, res: Response)=>{
 //En lo que hace la consulta tarda un poco haciéndola async el código detiene su ejecución hasta 
 //que se obtienen resultados
 export const createProduct = async (req: Request, res: Response)=>{  
-    try {
-        const product = await Product.create(req.body)//Esto crea el objeto instancia el nuevo producto y
+    const product = await Product.create(req.body)//Esto crea el objeto instancia el nuevo producto y
         //  lo almacena en la bd
-        res.json({data: product})//Retorna el producto que se ingreso a la base de datos
-    } catch (error) {
-        console.log(error)
-    }
+        res.status(201).json({data: product})//Retorna el producto que se ingreso a la base de datos
 
 }
 

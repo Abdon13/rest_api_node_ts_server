@@ -1,11 +1,14 @@
 import express from "express";
 import router from "./router";
+import path from "path";
 import db from "./config/db";
 import colors from "colors";
+import SwaggerUi from "swagger-ui-express";
+import swaggerSpec, {swaggerUiOptions} from "./config/swagger";
 //Instalamos la dependencia de colors para cambiar el color de los mensajes de la terminal 
 
 //Conectar a base de datos
-async function connectDB() {
+export async function connectDB() {
     try {
         await db.authenticate() //Esperar a que se realice la conexión autentificando con .authenticate
         db.sync() //En caso de crear nuevos modelos o columnas las ira agregando
@@ -28,12 +31,8 @@ server.use(express.json())//Habilita la lectura de los json
 
 server.use('/api/products', router)
 
-server.get('/api', (req, res ) => {
-    res.json({msg: 'Desde API'})
-})
-
-server.get('/api', (req, res) => {
-    res.json({msg: 'Desde API'})
-})
+//Docs
+server.use('/docs', SwaggerUi.serve, SwaggerUi.setup(swaggerSpec, swaggerUiOptions))
+server.use('/public', express.static(path.join(__dirname, '../public')))
 
 export default server
