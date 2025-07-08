@@ -9,7 +9,7 @@ async function connectDB() {
     try {
         await db.authenticate() //Esperar a que se realice la conexión autentificando con .authenticate
         db.sync() //En caso de crear nuevos modelos o columnas las ira agregando
-        console.log(colors.blue('Conexión exitosa a la BD'))
+        //console.log(colors.blue('Conexión exitosa a la BD'))
     } catch (error) {
         //console.log(error)
         console.log(colors.bgRed.white("Hubo un error al conectar a la BD"))
@@ -27,5 +27,13 @@ const server = express()
 server.use(express.json())//Habilita la lectura de los json
 
 server.use('/api/products', router)
+
+server.get('/api', (req, res ) => {
+    res.json({msg: 'Desde API'})
+})
+
+server.get('/api', (req, res) => {
+    res.json({msg: 'Desde API'})
+})
 
 export default server
